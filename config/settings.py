@@ -8,7 +8,7 @@ from config.keys import db
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Django Project Secret Key
-with open(os.path.join(BASE_DIR, 'conf/keys/secret_key.json')) as f:
+with open(os.path.join(BASE_DIR, 'config/keys/secret_key.json')) as f:
     SECRET_KEY = json.loads(f.read())['SECRET_KEY']
 
 # Debug Mode
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # Custom Apps
+    'univ',
 ]
 
 # Language / Timezone
@@ -57,7 +58,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DATABASES = db.DATABASES
 
 # URL
-ROOT_URLCONF = 'conf.urls'
+ROOT_URLCONF = 'config.urls'
 
 # Templates
 TEMPLATES = [
@@ -96,5 +97,5 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # WSGI
-WSGI_APPLICATION = 'conf.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 

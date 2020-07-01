@@ -7,3 +7,6 @@ venv/
 # Keys
 config/keys/
 
+# Database
+db.sqlite3
+
