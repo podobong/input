@@ -1,3 +1,6 @@
+# .swp File
+*.swp
+
 # Pycache
 __pycache__/
 
