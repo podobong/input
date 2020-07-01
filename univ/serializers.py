@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from univ.models import Schedule
+from univ.models import Schedule, University
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
