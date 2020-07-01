@@ -1,0 +1,9 @@
+# Pycache
+__pycache__/
+
+# Python Virtualenv
+venv/
+
+# Keys
+config/keys/
+
