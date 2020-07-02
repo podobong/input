@@ -4,7 +4,7 @@ import csv
 import django
 from django.db.models import Q
 from django.utils.dateparse import parse_datetime
-from django.utils.timezone import make_awake
+from django.utils.timezone import make_aware
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
@@ -49,25 +49,23 @@ for univ in University.objects.all():
             reader = csv.reader(f)
             next(reader)
             for row in reader:
-                jeonhyeong_info = row[0].split('|')
                 jeonhyeong = Jeonhyeong.objects.get(
-                        Q(university__name=jeonhyeong_info[0])
-                        & Q(susi_jeongsi=jeonhyeong_info[1])
-                        & Q(year=jeonhyeong_info[2])
-                        & Q(name=jeonhyeong_info[3])
+                        Q(university__name=row[0])
+                        & Q(susi_jeongsi=row[1])
+                        & Q(year=row[2])
+                        & Q(name=row[3])
                 )
-                major_block_info = row[1].split('|')
                 major_block = MajorBlock.objects.get(
-                        Q(university__name=major_block_info[0])
-                        & Q(susi_jeongsi=major_block_info[1])
-                        & Q(name=major_block_info[2])
+                        Q(university__name=row[0])
+                        & Q(susi_jeongsi=row[1])
+                        & Q(name=row[4])
                 )
-                start_date = make_aware(parse_datetime(row[3]))
-                end_date = make_aware(parse_datetime(row[4]))
+                start_date = make_aware(parse_datetime(row[6]))
+                end_date = make_aware(parse_datetime(row[7]))
                 if not Schedule.objects.filter(jeonhyeong=jeonhyeong).filter(major_block=major_block).filter(description=row[2]):
-                    Schedule(jeonhyeong=jeonhyeong, major_block=major_block, description=row[2], start_date=start_date, end_date=end_date).save()
+                    Schedule(jeonhyeong=jeonhyeong, major_block=major_block, description=row[5], start_date=start_date, end_date=end_date).save()
                 else:
-                    schedule = Schedule.objects.filter(jeonhyeong=jeonhyeong).filter(major_block=major_block).get(description=row[2])
+                    schedule = Schedule.objects.filter(jeonhyeong=jeonhyeong).filter(major_block=major_block).get(description=row[5])
                     schedule.start_date = start_date
                     schedule.end_date = end_date
                     schedule.save()
