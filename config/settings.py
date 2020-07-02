@@ -15,7 +15,7 @@ with open(os.path.join(BASE_DIR, 'config/keys/secret_key.json')) as f:
 DEBUG = True
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['web']
 
 # Installed Apps
 INSTALLED_APPS = [

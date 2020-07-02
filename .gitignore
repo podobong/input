@@ -13,3 +13,5 @@ config/keys/
 # Database
 db.sqlite3
 
+# Static Files
+static/
