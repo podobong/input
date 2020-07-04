@@ -10,13 +10,6 @@ from univ.serializers import UnivSerializer
 
 class UnivList(APIView):
     def get(self, request):
-        # Parameter existence check
-        if not 'id' in request.GET:
-            return Response(
-                    {'error': '"id" parameter is required.'},
-                    status=status.HTTP_400_BAD_REQUEST,
-                    )
-        # Serialize
         serializer = UnivSerializer(Univ.objects.all(), many=True, context={'request': request})
         return Response(serializer.data)
 
