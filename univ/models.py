@@ -1,6 +1,9 @@
 from django.db import models
 
 
+SUSI_JEONGSI = (('수시', '수시'), ('정시', '정시'))
+
+
 class Univ(models.Model):
     class Meta:
         verbose_name = '대학'
@@ -10,85 +13,118 @@ class Univ(models.Model):
             verbose_name='대학명',
             unique=True,
             max_length=30,
-    )
+            )
     logo = models.ImageField(
             verbose_name='로고 이미지',
             blank=True,
-    )
+            )
     review_url = models.CharField(
             verbose_name='리뷰 URL',
             blank=True,
             max_length=100,
-    )
+            )
+    like = models.IntegerField(
+            verbose_name='즐찾',
+            default=0,
+            )
 
     def __str__(self):
         return self.name
 
 
-class SusiJH(models.Model):
+class SJ(models.Model):
     class Meta:
-        verbose_name = '수시전형'
-        verbose_name_plural = '수시전형'
+        verbose_name = '수시/정시'
+        verbose_name_plural = '수시/정시'
 
     univ = models.ForeignKey(
             verbose_name='대학',
             to=Univ,
-            related_name='susi_jhs',
+            related_name='sjs',
             on_delete=models.CASCADE,
-    )
+            )
+    sj = models.CharField(
+            verbose_name='수시/정시',
+            choices=SUSI_JEONGSI,
+            max_length=10,
+            )
+    
+    def __str__(self):
+        return f'{self.univ.name}|{self.sj}'
+
+
+class JH(models.Model):
+    class Meta:
+        verbose_name = '전형'
+        verbose_name_plural = '전형'
+
+    sj = models.ForeignKey(
+            verbose_name='수시/정시',
+            to=SJ,
+            related_name='jhs',
+            on_delete=models.CASCADE,
+            )
     name = models.CharField(
             verbose_name='전형명',
             max_length=30,
-    )
+            )
+    like = models.IntegerField(
+            verbose_name='즐찾',
+            default=0,
+            )
 
     def __str__(self):
-        return f'{self.univ.name}|{self.name}'
+        return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
 
 
-class SusiMajor(models.Model):
+class Major(models.Model):
     class Meta:
-        verbose_name = '수시 학과'
-        verbose_name_plural = '수시 학과'
+        verbose_name = '전형별 학과'
+        verbose_name_plural = '전형별 학과'
 
-    susi_jh = models.ForeignKey(
-            verbose_name='수시전형',
-            to=SusiJH,
-            related_name='susi_majors',
+    jh = models.ForeignKey(
+            verbose_name='전형',
+            to=JH,
+            related_name='majors',
             on_delete=models.CASCADE,
             )
     name = models.CharField(
             verbose_name='학과명',
             max_length=50,
             )
+    like = models.IntegerField(
+            verbose_name='즐찾',
+            default=0,
+            )
 
     def __str__(self):
-        return f'{self.susi_jh.univ.name}|{self.susi_jh.name}|{self.name}'
+        return f'{self.jh.sj.univ.name}|{self.jh.sj.sj}|{self.jh.name}|{self.name}'
 
 
-class SusiSchedule(models.Model):
+class Schedule(models.Model):
     class Meta:
-        verbose_name = '수시 일정'
-        verbose_name_plural = '수시 일정'
+        verbose_name = '학과별 일정'
+        verbose_name_plural = '학과별 일정'
 
     major = models.ForeignKey(
-            verbose_name='수시 학과',
-            to=SusiMajor,
-            related_name='susi_schedules',
+            verbose_name='전형별 학과',
+            to=Major,
+            related_name='schedules',
             on_delete=models.CASCADE,
-    )
+            )
     description = models.CharField(
             verbose_name='일정 설명',
             max_length=255,
-    )
+            )
     start_date = models.DateTimeField(
             verbose_name='시작 시간',
-    )
+            )
     end_date = models.DateTimeField(
             verbose_name='종료 시간',
-    )
+            )
 
     def __str__(self):
-        return f'{self.major.susi_jh.univ.name}|{self.major.susi_jh.name}|{self.major.name}|{self.description}'
+        return f'{self.major.jh.sj.univ.name}|{self.major.jh.sj.sj}|{self.major.jh.name}|{self.major.name}|{self.description}'
 
 
 class Device(models.Model):
@@ -100,9 +136,9 @@ class Device(models.Model):
             verbose_name='기기 ID',
             max_length=50,
             )
-    susis = models.ManyToManyField(
-            verbose_name='즐찾 수시',
-            to=SusiMajor,
+    majors = models.ManyToManyField(
+            verbose_name='즐찾 학과',
+            to=Major,
             related_name='devices',
             )
 
