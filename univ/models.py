@@ -1,12 +1,10 @@
-from datetime import datetime
 from django.db import models
 
 
 SUSI_JEONGSI = (('수시', '수시'), ('정시', '정시'))
-YEARS = [(y, y) for y in range(2021, (datetime.now().year+2))]
 
 
-class University(models.Model):
+class Univ(models.Model):
     class Meta:
         verbose_name = '대학'
         verbose_name_plural = '대학'
@@ -14,133 +12,126 @@ class University(models.Model):
     name = models.CharField(
             verbose_name='대학명',
             unique=True,
-            max_length=63,
-    )
-    logo = models.ImageField(
-            verbose_name='로고 이미지',
+            max_length=30,
+            )
+    logo = models.CharField(
+            verbose_name='로고 URL',
             blank=True,
-    )
+            max_length=100,
+            )
     review_url = models.CharField(
             verbose_name='리뷰 URL',
             blank=True,
-            max_length=127,
-    )
+            max_length=100,
+            )
 
     def __str__(self):
         return self.name
 
 
-class MajorBlock(models.Model):
+class SJ(models.Model):
     class Meta:
-        verbose_name = '학과 블록'
-        verbose_name_plural = '학과 블록'
+        verbose_name = '수시/정시'
+        verbose_name_plural = '수시/정시'
 
-    university = models.ForeignKey(
+    univ = models.ForeignKey(
             verbose_name='대학',
-            to=University,
-            related_name='major_blocks',
+            to=Univ,
+            related_name='sjs',
             on_delete=models.CASCADE,
-    )
-    susi_jeongsi = models.CharField(
+            )
+    sj = models.CharField(
             verbose_name='수시/정시',
             choices=SUSI_JEONGSI,
-            max_length=7,
-    )
-    name = models.CharField(
-            verbose_name='분류명',
-            max_length=255,
-    )
-
+            max_length=10,
+            )
+    
     def __str__(self):
-        return f'{self.university.name}|{self.name}'
+        return f'{self.univ.name}|{self.sj}'
 
 
-class Jeonhyeong(models.Model):
+class JH(models.Model):
     class Meta:
         verbose_name = '전형'
         verbose_name_plural = '전형'
 
-    university = models.ForeignKey(
-            verbose_name='대학',
-            to=University,
-            related_name='jeonhyeongs',
-            on_delete=models.CASCADE,
-    )
-    susi_jeongsi = models.CharField(
+    sj = models.ForeignKey(
             verbose_name='수시/정시',
-            choices=SUSI_JEONGSI,
-            max_length=7,
-    )
-    year = models.IntegerField(
-            verbose_name='학년도',
-            choices=YEARS,
-    )
+            to=SJ,
+            related_name='jhs',
+            on_delete=models.CASCADE,
+            )
     name = models.CharField(
             verbose_name='전형명',
-            max_length=63,
-    )
+            max_length=30,
+            )
 
     def __str__(self):
-        return f'{str(self.year)}|{self.university.name}|{self.susi_jeongsi}|{self.name}'
+        return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
+
+
+class Major(models.Model):
+    class Meta:
+        verbose_name = '전형별 학과'
+        verbose_name_plural = '전형별 학과'
+
+    jh = models.ForeignKey(
+            verbose_name='전형',
+            to=JH,
+            related_name='majors',
+            on_delete=models.CASCADE,
+            )
+    name = models.CharField(
+            verbose_name='학과명',
+            max_length=50,
+            )
+
+    def __str__(self):
+        return f'{self.jh.sj.univ.name}|{self.jh.sj.sj}|{self.jh.name}|{self.name}'
 
 
 class Schedule(models.Model):
     class Meta:
-        verbose_name = '일정'
-        verbose_name_plural = '일정'
+        verbose_name = '학과별 일정'
+        verbose_name_plural = '학과별 일정'
 
-    jeonhyeong = models.ForeignKey(
-            verbose_name='전형',
-            to=Jeonhyeong,
+    major = models.ForeignKey(
+            verbose_name='전형별 학과',
+            to=Major,
             related_name='schedules',
             on_delete=models.CASCADE,
-    )
-    major_block = models.ForeignKey(
-            verbose_name='학과 블록',
-            to=MajorBlock,
-            related_name='schedules',
-            on_delete=models.CASCADE,
-    )
-
-    university = models.CharField(
-            max_length=63,
-            editable=False,
-    )
-    year = models.IntegerField(
-            editable=False,
-    )
-    sj = models.CharField(
-            max_length=7,
-            editable=False,
-    )
-    jh = models.CharField(
-            max_length=63,
-            editable=False,
-    )
-    block = models.CharField(
-            max_length=255,
-            editable=False,
-    )
-
+            )
     description = models.CharField(
-            verbose_name='설명',
+            verbose_name='일정 설명',
             max_length=255,
-    )
+            )
     start_date = models.DateTimeField(
-            verbose_name='시작시간',
-    )
+            verbose_name='시작 시간',
+            )
     end_date = models.DateTimeField(
-            verbose_name='종료시간',
-    )
-
-    def save(self, **kwargs):
-        self.university = self.jeonhyeong.university.name
-        self.year = self.jeonhyeong.year
-        self.sj = self.jeonhyeong.susi_jeongsi
-        self.jh = self.jeonhyeong.name
-        self.block = self.major_block.name
-        super().save()
+            verbose_name='종료 시간',
+            )
 
     def __str__(self):
-        return f'{str(self.year)}|{self.university}|{self.susi_jeongsi}|{self.jeonhyeong}|{self.description}|{self.major_block}'
+        return f'{self.major.jh.sj.univ.name}|{self.major.jh.sj.sj}|{self.major.jh.name}|{self.major.name}|{self.description}'
+
+
+class Device(models.Model):
+    class Meta:
+        verbose_name = '기기 정보'
+        verbose_name_plural = '기기 정보'
+
+    unique_id = models.CharField(
+            verbose_name='기기 ID',
+            max_length=50,
+            unique=True,
+            )
+    majors = models.ManyToManyField(
+            verbose_name='즐찾 학과',
+            to=Major,
+            related_name='devices',
+            )
+
+    def __str__(self):
+        return self.unique_id
 

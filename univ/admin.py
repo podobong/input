@@ -1,10 +1,12 @@
 from django.contrib import admin
 
-from univ.models import University, MajorBlock, Jeonhyeong, Schedule
+from univ import models
 
 
-admin.site.register(University)
-admin.site.register(MajorBlock)
-admin.site.register(Jeonhyeong)
-admin.site.register(Schedule)
+admin.site.register(models.Univ)
+admin.site.register(models.SJ)
+admin.site.register(models.JH)
+admin.site.register(models.Major)
+admin.site.register(models.Schedule)
+admin.site.register(models.Device)
 
