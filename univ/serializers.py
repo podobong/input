@@ -11,6 +11,16 @@ class ScheduleSerializer(s.ModelSerializer):
 
 class MajorSerializer(s.ModelSerializer):
     schedules = ScheduleSerializer(many=True)
+    like = s.SerializerMethodField()
+
+    def get_like(self, obj):
+        unique_id = self.context.get('request').GET.get('id')
+        if not unique_id:
+            return 0
+        device = m.Device.objects.get(unique_id=unique_id)
+        if obj in device.majors.all():
+            return 1
+        return 0
 
     class Meta:
         model = m.Major
@@ -19,6 +29,17 @@ class MajorSerializer(s.ModelSerializer):
 
 class JHSerializer(s.ModelSerializer):
     majors = MajorSerializer(many=True)
+    like = s.SerializerMethodField()
+
+    def get_like(self, obj):
+        unique_id = self.context.get('request').GET.get('id')
+        if not unique_id:
+            return 0
+        device = m.Device.objects.get(unique_id=unique_id)
+        for major in obj.majors.all():
+            if major in device.majors.all():
+                return 1
+        return 0
 
     class Meta:
         model = m.JH
@@ -35,6 +56,19 @@ class SJSerializer(s.ModelSerializer):
 
 class UnivSerializer(s.ModelSerializer):
     sjs = SJSerializer(many=True)
+    like = s.SerializerMethodField()
+
+    def get_like(self, obj):
+        unique_id = self.context.get('request').GET.get('id')
+        if not unique_id:
+            return 0
+        device = m.Device.objects.get(unique_id=unique_id)
+        for sj in obj.sjs.all():
+            for jh in sj.jhs.all():
+                for major in jh.majors.all():
+                    if major in device.majors.all():
+                        return 1
+        return 0
 
     class Meta:
         model = m.Univ

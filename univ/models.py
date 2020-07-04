@@ -24,10 +24,6 @@ class Univ(models.Model):
             blank=True,
             max_length=100,
             )
-    like = models.IntegerField(
-            verbose_name='즐찾',
-            default=0,
-            )
 
     def __str__(self):
         return self.name
@@ -69,10 +65,6 @@ class JH(models.Model):
             verbose_name='전형명',
             max_length=30,
             )
-    like = models.IntegerField(
-            verbose_name='즐찾',
-            default=0,
-            )
 
     def __str__(self):
         return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
@@ -92,10 +84,6 @@ class Major(models.Model):
     name = models.CharField(
             verbose_name='학과명',
             max_length=50,
-            )
-    like = models.IntegerField(
-            verbose_name='즐찾',
-            default=0,
             )
 
     def __str__(self):
