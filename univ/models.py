@@ -14,9 +14,10 @@ class Univ(models.Model):
             unique=True,
             max_length=30,
             )
-    logo = models.ImageField(
-            verbose_name='로고 이미지',
+    logo = models.CharField(
+            verbose_name='로고 URL',
             blank=True,
+            max_length=100,
             )
     review_url = models.CharField(
             verbose_name='리뷰 URL',
