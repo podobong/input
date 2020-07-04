@@ -136,6 +136,7 @@ class Device(models.Model):
     unique_id = models.CharField(
             verbose_name='기기 ID',
             max_length=50,
+            unique=True,
             )
     majors = models.ManyToManyField(
             verbose_name='즐찾 학과',
