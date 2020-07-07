@@ -21,7 +21,7 @@ class UnivList(APIView):
 
     def post(self, request):
         # Parameter existence check
-        required_parameters = ('id', 'univ0', 'jh0', 'major0')
+        required_parameters = ('id', 'token', 'univ0', 'jh0', 'major0')
         for param in required_parameters:
             if not param in request.data:
                 return Response(
