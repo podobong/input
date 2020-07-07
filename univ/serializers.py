@@ -22,7 +22,7 @@ class MajorSerializer(s.ModelSerializer):
     like = s.SerializerMethodField()
 
     def get_like(self, obj):
-        unique_id = self.context.get('request').GET.get('id')
+        unique_id = self.context.get('request').data.get('id')
         if not unique_id:
             return 0
         device = m.Device.objects.get(unique_id=unique_id)
@@ -40,7 +40,7 @@ class JHSerializer(s.ModelSerializer):
     like = s.SerializerMethodField()
 
     def get_like(self, obj):
-        unique_id = self.context.get('request').GET.get('id')
+        unique_id = self.context.get('request').data.get('id')
         if not unique_id:
             return 0
         device = m.Device.objects.get(unique_id=unique_id)
