@@ -1,12 +1,20 @@
 from rest_framework import serializers as s
 
+from django.utils.timezone import make_aware
 from univ import models as m
-
+import datetime
 
 class ScheduleSerializer(s.ModelSerializer):
+    is_valid = s.SerializerMethodField()
+
+    def get_is_valid(self, obj):
+        if make_aware(datetime.datetime.now()) < obj.start_date:
+            return 1
+        else:
+            return 0
     class Meta:
         model = m.Schedule
-        fields = ('description', 'start_date', 'end_date')
+        fields = ('is_valid', 'description', 'start_date', 'end_date')
 
 
 class MajorSerializer(s.ModelSerializer):

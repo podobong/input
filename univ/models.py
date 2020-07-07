@@ -131,6 +131,10 @@ class Device(models.Model):
             to=Major,
             related_name='devices',
             )
+    token = models.CharField(
+            verbose_name='기기 token',
+            max_length=256,
+            )
 
     def __str__(self):
         return self.unique_id
