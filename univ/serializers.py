@@ -59,10 +59,13 @@ class UnivSerializer(s.ModelSerializer):
     like = s.SerializerMethodField()
 
     def get_like(self, obj):
-        unique_id = self.context.get('request').GET.get('id')
+        unique_id = self.context.get('request').data.get('id')
         if not unique_id:
             return 0
-        device = m.Device.objects.get(unique_id=unique_id)
+        try:
+            device = m.Device.objects.get(unique_id=unique_id)
+        except m.Device.DoesNotExist:
+            raise m.Device.DoesNotExist
         for sj in obj.sjs.all():
             for jh in sj.jhs.all():
                 for major in jh.majors.all():
@@ -73,4 +76,3 @@ class UnivSerializer(s.ModelSerializer):
     class Meta:
         model = m.Univ
         fields = ('name', 'logo', 'review_url', 'like', 'sjs')
-

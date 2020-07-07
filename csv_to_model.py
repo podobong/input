@@ -69,4 +69,3 @@ for univ in University.objects.all():
                     schedule.start_date = start_date
                     schedule.end_date = end_date
                     schedule.save()
-

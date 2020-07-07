@@ -15,7 +15,7 @@ with open(os.path.join(BASE_DIR, 'config/keys/secret_key.json')) as f:
 DEBUG = True
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['web', '125.130.100.2']
+ALLOWED_HOSTS = ['web', 'localhost']
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -26,10 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # 3rd Party Apps
     'rest_framework',
-
+    'corsheaders',
     # Custom Apps
     'univ',
 ]
@@ -86,6 +85,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 # Authentication
@@ -99,3 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # WSGI
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True

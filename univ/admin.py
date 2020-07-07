@@ -9,4 +9,3 @@ admin.site.register(models.JH)
 admin.site.register(models.Major)
 admin.site.register(models.Schedule)
 admin.site.register(models.Device)
-

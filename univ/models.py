@@ -134,4 +134,3 @@ class Device(models.Model):
 
     def __str__(self):
         return self.unique_id
-
