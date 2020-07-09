@@ -6,12 +6,21 @@ import datetime
 
 class ScheduleSerializer(s.ModelSerializer):
     is_valid = s.SerializerMethodField()
+    start_date = s.SerializerMethodField()
+    end_date = s.SerializerMethodField()
 
     def get_is_valid(self, obj):
         if make_aware(datetime.datetime.now()) < obj.start_date:
             return 1
         else:
             return 0
+
+    def get_start_date(self, obj):
+        return obj.start_date.strftime('%Y-%m-%d-%H-%M-%S')
+
+    def get_end_date(self, obj):
+        return obj.end_date.strftime('%Y-%m-%d-%H-%M-%S')
+
     class Meta:
         model = m.Schedule
         fields = ('is_valid', 'description', 'start_date', 'end_date')

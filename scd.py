@@ -24,7 +24,7 @@ def notify():
         now_hour = KST.localize(datetime.now().replace(minute=0, second=0, microsecond=0))
         if now_hour == (schedule.start_date - day_before):
             for token in tokens:
-                send_fcm_notification(token, '제목', schedule.description)
+                send_fcm_notification(token, 'title', schedule.description)
 
 
 if __name__ == '__main__':
