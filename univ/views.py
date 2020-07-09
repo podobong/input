@@ -49,16 +49,15 @@ class UnivList(APIView):
         try:
             device = Device.objects.create(unique_id=values.get('id'), token=values.get('token'))
         except IntegrityError:
-            return Response({'error': 'Device ID is duplicated.'})
+            device = Device.objects.get(unique_id=values.get('id'))
         for i in range(num):
-            print(values.get(f'univ{i}'))
-            device.majors.add(
-                    Major.objects.get(
+            major = Major.objects.get(
                         Q(jh__sj__univ__name=values.get(f'univ{i}')) &
                         Q(jh__name=values.get(f'jh{i}')) &
                         Q(name=values.get(f'major{i}'))
                         )
-                    )
+            if major not in device.majors.all():
+                device.majors.add(major)
         device.save()
         # Serialize
         serializer = UnivSerializer(Univ.objects.all(), many=True, context={'request': request})
