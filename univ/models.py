@@ -33,6 +33,7 @@ class SJ(models.Model):
     class Meta:
         verbose_name = '수시/정시'
         verbose_name_plural = '수시/정시'
+        ordering = ['sj']
 
     univ = models.ForeignKey(
             verbose_name='대학',
