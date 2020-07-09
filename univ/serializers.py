@@ -38,6 +38,8 @@ class JHSerializer(s.ModelSerializer):
     majors = s.SerializerMethodField()
 
     def get_majors(self, obj):
+        if not self.context.get('majors'):
+            return MajorSerializer(obj.majors, many=True, context=self.context).data
         all_majors = self.context.get('majors')
         majors_in_this_jh = [major for major in all_majors if major.jh == obj]
         return MajorSerializer(majors_in_this_jh, many=True, context=self.context).data
@@ -51,6 +53,8 @@ class SJSerializer(s.ModelSerializer):
     jhs = s.SerializerMethodField()
 
     def get_jhs(self, obj):
+        if not self.context.get('jhs'):
+            return JHSerializer(obj.jhs, many=True, context=self.context).data
         all_jhs = self.context.get('jhs')
         jhs_in_this_sj = [jh for jh in all_jhs if jh.sj == obj]
         return JHSerializer(jhs_in_this_sj, many=True, context=self.context).data
@@ -64,6 +68,8 @@ class UnivSerializer(s.ModelSerializer):
     sjs = s.SerializerMethodField()
 
     def get_sjs(self, obj):
+        if not self.context.get('sjs'):
+            return SJSerializer(obj.sjs, many=True, context=self.context).data
         all_sjs = self.context.get('sjs')
         sjs_in_this_univ = [sj for sj in all_sjs if sj.univ == obj]
         return SJSerializer(sjs_in_this_univ, many=True, context=self.context).data
