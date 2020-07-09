@@ -94,6 +94,7 @@ class Schedule(models.Model):
     class Meta:
         verbose_name = '학과별 일정'
         verbose_name_plural = '학과별 일정'
+        ordering = ['start_date']
 
     major = models.ForeignKey(
             verbose_name='전형별 학과',

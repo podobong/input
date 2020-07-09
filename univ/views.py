@@ -10,14 +10,19 @@ from univ.serializers import UnivSerializer
 
 class UnivList(APIView):
     def get(self, request):
-        serializer = UnivSerializer(Univ.objects.all(), many=True, context={'request': request})
         try:
-            return Response(serializer.data)
+            device = Device.objects.get(unique_id=request.GET.get('id'))
         except Device.DoesNotExist:
             return Response(
                     {'error': 'Device does not exist. To add a new device, use POST method.'},
                     status=status.HTTP_400_BAD_REQUEST,
                     )
+        majors = device.majors.all()
+        jhs = list(set([major.jh for major in majors]))
+        sjs = list(set([major.jh.sj for major in majors]))
+        univs = list(set([major.jh.sj.univ for major in majors]))
+        serializer = UnivSerializer(univs, many=True, context={'request': request, 'sjs': sjs, 'jhs': jhs, 'majors': majors})
+        return Response(serializer.data)
 
     def post(self, request):
         # Parameter existence check

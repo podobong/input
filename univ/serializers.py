@@ -28,51 +28,32 @@ class ScheduleSerializer(s.ModelSerializer):
 
 class MajorSerializer(s.ModelSerializer):
     schedules = ScheduleSerializer(many=True)
-    like = s.SerializerMethodField()
-
-    def get_like(self, obj):
-        request = self.context.get('request')
-        if request.method == 'GET':
-            unique_id = request.GET.get('id')
-        else:
-            unique_id = request.data.get('id')
-        if not unique_id:
-            return 0
-        device = m.Device.objects.get(unique_id=unique_id)
-        if obj in device.majors.all():
-            return 1
-        return 0
 
     class Meta:
         model = m.Major
-        fields = ('name', 'like', 'schedules')
+        fields = ('name', 'schedules')
 
 
 class JHSerializer(s.ModelSerializer):
-    majors = MajorSerializer(many=True)
-    like = s.SerializerMethodField()
+    majors = s.SerializerMethodField()
 
-    def get_like(self, obj):
-        request = self.context.get('request')
-        if request.method == 'GET':
-            unique_id = request.GET.get('id')
-        else:
-            unique_id = request.data.get('id')
-        if not unique_id:
-            return 0
-        device = m.Device.objects.get(unique_id=unique_id)
-        for major in obj.majors.all():
-            if major in device.majors.all():
-                return 1
-        return 0
+    def get_majors(self, obj):
+        all_majors = self.context.get('majors')
+        majors_in_this_jh = [major for major in all_majors if major.jh == obj]
+        return MajorSerializer(majors_in_this_jh, many=True, context=self.context).data
 
     class Meta:
         model = m.JH
-        fields = ('name', 'like', 'majors')
+        fields = ('name', 'majors')
 
 
 class SJSerializer(s.ModelSerializer):
-    jhs = JHSerializer(many=True)
+    jhs = s.SerializerMethodField()
+
+    def get_jhs(self, obj):
+        all_jhs = self.context.get('jhs')
+        jhs_in_this_sj = [jh for jh in all_jhs if jh.sj == obj]
+        return JHSerializer(jhs_in_this_sj, many=True, context=self.context).data
 
     class Meta:
         model = m.SJ
@@ -80,28 +61,13 @@ class SJSerializer(s.ModelSerializer):
 
 
 class UnivSerializer(s.ModelSerializer):
-    sjs = SJSerializer(many=True)
-    like = s.SerializerMethodField()
+    sjs = s.SerializerMethodField()
 
-    def get_like(self, obj):
-        request = self.context.get('request')
-        if request.method == 'GET':
-            unique_id = request.GET.get('id')
-        else:
-            unique_id = request.data.get('id')
-        if not unique_id:
-            return 0
-        try:
-            device = m.Device.objects.get(unique_id=unique_id)
-        except m.Device.DoesNotExist:
-            raise m.Device.DoesNotExist
-        for sj in obj.sjs.all():
-            for jh in sj.jhs.all():
-                for major in jh.majors.all():
-                    if major in device.majors.all():
-                        return 1
-        return 0
+    def get_sjs(self, obj):
+        all_sjs = self.context.get('sjs')
+        sjs_in_this_univ = [sj for sj in all_sjs if sj.univ == obj]
+        return SJSerializer(sjs_in_this_univ, many=True, context=self.context).data
 
     class Meta:
         model = m.Univ
-        fields = ('name', 'logo', 'review_url', 'like', 'sjs')
+        fields = ('name', 'logo', 'review_url', 'sjs')
