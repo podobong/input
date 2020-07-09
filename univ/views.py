@@ -52,7 +52,8 @@ class UnivList(APIView):
         try:
             device = Device.objects.create(unique_id=values.get('id'), token=values.get('token'))
         except IntegrityError:
-            device = Device.objects.get(unique_id=values.get('id'))
+            Device.objects.get(unique_id=values.get('id')).delete()
+            device = Device.objects.create(unique_id=values.get('id'), token=values.get('token'))
         for i in range(num):
             major = Major.objects.get(
                         Q(jh__sj__univ__name=values.get(f'univ{i}')) &
