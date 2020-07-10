@@ -20,8 +20,8 @@ with open('csv/university.csv', 'r', encoding='utf-8') as f:
             University(name=row[0], logo=row[1], review_url=row[2]).save()
 
 for univ in University.objects.all():
-    jeonhyeong_file = f'csv/{univ.name}/jeonhyeong.csv'
-    major_block_file = f'csv/{univ.name}/major_block.csv'
+    jeonhyeong_file = f'csv/{univ.name}/jh.csv'
+    major_block_file = f'csv/{univ.name}/major.csv'
     schedule_file = f'csv/{univ.name}/schedule.csv'
 
     if os.path.isfile(jeonhyeong_file):
