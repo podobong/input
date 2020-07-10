@@ -15,7 +15,7 @@ with open(os.path.join(BASE_DIR, 'config/keys/secret_key.json')) as f:
 DEBUG = True
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['web', '125.130.100.2', 'localhost']
+ALLOWED_HOSTS = ['web', 'ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com', '125.130.100.2', 'localhost']
 
 # Installed Apps
 INSTALLED_APPS = [

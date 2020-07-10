@@ -1,6 +1,7 @@
 from rest_framework import serializers as s
-
 from django.utils.timezone import make_aware
+from pytz import timezone
+
 from univ import models as m
 import datetime
 
@@ -16,10 +17,10 @@ class ScheduleSerializer(s.ModelSerializer):
             return 0
 
     def get_start_date(self, obj):
-        return obj.start_date.strftime('%Y-%m-%d-%H-%M-%S')
+        return obj.start_date.astimezone(timezone('Asia/Seoul')).strftime('%Y-%m-%d-%H-%M-%S')
 
     def get_end_date(self, obj):
-        return obj.end_date.strftime('%Y-%m-%d-%H-%M-%S')
+        return obj.end_date.astimezone(timezone('Asia/Seoul')).strftime('%Y-%m-%d-%H-%M-%S')
 
     class Meta:
         model = m.Schedule
