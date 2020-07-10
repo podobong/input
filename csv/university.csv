@@ -1,22 +1,22 @@
-﻿name,logo,review_url,bigo,damdang
-서울대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/seoul.png,https://www.univ100.kr/review/55,전 학과,김혜인
+﻿name,logo,review_url,bigo,damdang,done
+서울대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/seoul.png,https://www.univ100.kr/review/55,전 학과,김혜인,1
 서울시립대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/seoul_sirib.png,https://www.univ100.kr/review/29,전 학과,김다희
-부산대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/busan.png,https://www.univ100.kr/review/157,전 학과,차민지
+부산대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/busan.png,https://www.univ100.kr/review/157,전 학과,김혜인
 경북대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/gyeongbook.png,https://www.univ100.kr/review/405,전 학과,김다희
 전남대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/jeonnam.png,https://www.univ100.kr/review/407,전 학과,김다희
 충남대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/chungnam.png,https://www.univ100.kr/review/202,전 학과,최성우
 한국예술종합학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hanyejong.png,https://www.univ100.kr/review/213,전 학과,김혜인
-한국체육대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hankook_sport.png,https://www.univ100.kr/review/61,전 학과,차민지
+한국체육대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hankook_sport.png,https://www.univ100.kr/review/61,전 학과,김다희
 연세대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/yonsei.png,https://www.univ100.kr/review/1,전 학과,김혜인
 고려대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/korea.png,https://www.univ100.kr/review/38,전 학과,김다희
-서강대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/seogang.png,https://www.univ100.kr/review/36,전 학과,조성지
+서강대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/seogang.png,https://www.univ100.kr/review/36,전 학과,최성우
 성균관대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/sungkyunkwan.png,https://www.univ100.kr/review/13,전 학과,김혜인
-한양대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hanyang.png,https://www.univ100.kr/review/6,전 학과,최성우
+한양대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hanyang.png,https://www.univ100.kr/review/6,전 학과,최성우,1
 중앙대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/chungang.png,https://www.univ100.kr/review/2,전 학과,김다희
 경희대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/gyunghee.png,https://www.univ100.kr/review/8,전 학과,김혜인
 한국외국어대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hankook_foreign.png,https://www.univ100.kr/review/32,전 학과,최성우
-이화여자대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/ewha.png,https://www.univ100.kr/review/10,전 학과,조성지
-건국대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/kunkook.png,https://www.univ100.kr/review/30,전 학과,차민지
+이화여자대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/ewha.png,https://www.univ100.kr/review/10,전 학과,김다희
+건국대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/kunkook.png,https://www.univ100.kr/review/30,전 학과,최성우
 동국대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/dongguk.png,https://www.univ100.kr/review/58,전 학과,최성우
 홍익대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/hongik.png,https://www.univ100.kr/review/19,전 학과,김다희
 숙명여자대학교,http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/sookmyung.png,https://www.univ100.kr/review/21,전 학과,김다희
