@@ -10,7 +10,7 @@
 전형 정보
 
 - university: 대학 이름
-- sj 수시 or 정시
+- sj: 수시 or 정시
 - name: 전형 이름
 
 ## major
