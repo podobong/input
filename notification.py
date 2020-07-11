@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 import os
 import time
+import requests
+import json
 from datetime import datetime, timedelta
 
 from pytz import timezone
@@ -9,10 +12,24 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
+from config.keys import firebase
 from univ.models import Schedule
-from temp import send_fcm_notification
 
 KST = timezone('Asia/Seoul')
+
+
+def send_fcm_notification(ids, title, body):
+    url = 'https://fcm.googleapis.com/fcm/send'
+    headers = {
+        'Authorization': firebase.key,
+        'Content-Type': 'application/json; UTF-8',
+    }
+    content = {
+        'to': ids,
+        'notification': {'title': title, 'body': body},
+        "data": {"id": "id"}
+    }
+    requests.post(url, data=json.dumps(content), headers=headers)
 
 
 def notify():
@@ -22,9 +39,6 @@ def notify():
         tokens = [user.token for user in liked_users]
         day_before = timedelta(days=1)
         now_hour = KST.localize(datetime.now().replace(minute=0, second=0, microsecond=0))
-        if now_hour == (schedule.start_date - day_before):
-            for token in tokens:
-                send_fcm_notification(token, f'{schedule.description} 시작 하루 전이에요!', schedule.description)
         if now_hour == (schedule.end_date - day_before):
             for token in tokens:
                 send_fcm_notification(token, f'{schedule.description} 마감 하루 전이에요!', schedule.description)
