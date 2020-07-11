@@ -11,7 +11,7 @@ class ScheduleSerializer(s.ModelSerializer):
     end_date = s.SerializerMethodField()
 
     def get_is_valid(self, obj):
-        if make_aware(datetime.datetime.now()) < obj.start_date:
+        if make_aware(datetime.datetime.now()) < obj.end_date:
             return 1
         else:
             return 0
