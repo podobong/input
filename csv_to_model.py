@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import csv
 
@@ -20,10 +21,11 @@ with open('csv/university.csv', 'r', encoding='utf-8') as f:
             Univ.objects.create(name=row[0], logo=row[1], review_url=row[2])
 
 for univ in Univ.objects.all():
-    univ = Univ.objects.get(name=univ)
-    SJ.objects.create(univ=univ, sj='수시')
-    SJ.objects.create(univ=univ, sj='정시')
-
+    if not SJ.objects.filter(univ=univ, sj='수시'):
+        SJ.objects.create(univ=univ, sj='수시')
+    if not SJ.objects.filter(univ=univ, sj='정시'):
+        SJ.objects.create(univ=univ, sj='정시')
+    
     jh_file = f'csv/{univ.name}/jh.csv'
     major_file = f'csv/{univ.name}/major.csv'
     schedule_file = f'csv/{univ.name}/schedule.csv'
