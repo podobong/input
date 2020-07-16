@@ -3,16 +3,21 @@ from django.db import IntegrityError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 
 from univ.models import Univ, Major, Device
-from univ.serializers import UnivSerializer
+from univ.serializers import UnivSerializer, UnivListSerializer
+from univ.pagination import PaginationMixin
 
 
-class UnivList(APIView):
+class UnivList(APIView, PaginationMixin):
+    pagination_class = PageNumberPagination
+
     def get(self, request):
         if not request.GET.get('id'):
-            serializer = UnivSerializer(Univ.objects.all(), many=True, context={'request':request})
-            return Response(serializer.data)
+            page = self.paginate_queryset(Univ.objects.all())
+            serializer = UnivListSerializer(page, many=True, context={'request':request})
+            return self.get_paginated_response(serializer.data)
         try:
             device = Device.objects.get(unique_id=request.GET.get('id'))
         except Device.DoesNotExist:
