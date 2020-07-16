@@ -3,16 +3,12 @@ from django.db import IntegrityError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.pagination import PageNumberPagination
 
 from univ.models import Univ, Major, Device
 from univ.serializers import UnivSerializer, UnivListSerializer
-from univ.pagination import PaginationMixin
 
 
-class UnivList(APIView, PaginationMixin):
-    pagination_class = PageNumberPagination
-
+class UnivList(APIView):
     def get(self, request):
         if not request.GET.get('id'):
             page = self.paginate_queryset(Univ.objects.all())
