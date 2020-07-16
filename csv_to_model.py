@@ -25,7 +25,7 @@ for univ in Univ.objects.all():
         SJ.objects.create(univ=univ, sj='수시')
     if not SJ.objects.filter(univ=univ, sj='정시'):
         SJ.objects.create(univ=univ, sj='정시')
-    
+
     jh_file = f'csv/{univ.name}/jh.csv'
     major_file = f'csv/{univ.name}/major.csv'
     schedule_file = f'csv/{univ.name}/schedule.csv'
