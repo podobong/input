@@ -11,7 +11,7 @@ from univ.serializers import UnivSerializer, UnivListSerializer
 class UnivList(APIView):
     def get(self, request):
         if not request.GET.get('id'):
-            serializer = UnivSerializer(Univ.objects.all(), many=True, context={'request':request})
+            serializer = UnivListSerializer(Univ.objects.all(), many=True, context={'request':request})
             return Response(serializer.data)
         try:
             device = Device.objects.get(unique_id=request.GET.get('id'))
