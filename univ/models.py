@@ -64,7 +64,7 @@ class JH(models.Model):
             )
     name = models.CharField(
             verbose_name='전형명',
-            max_length=30,
+            max_length=255,
             )
 
     def __str__(self):
