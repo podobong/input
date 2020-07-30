@@ -29,6 +29,9 @@ class Univ(models.Model):
     def __str__(self):
         return self.name
 
+    def __repr__(self):
+        return self.name
+
 
 class SJ(models.Model):
     class Meta:
@@ -72,6 +75,9 @@ class JH(models.Model):
     def __str__(self):
         return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
 
+    def __repr__(self):
+        return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
+
 
 class Major(models.Model):
     class Meta:
@@ -91,6 +97,9 @@ class Major(models.Model):
             )
 
     def __str__(self):
+        return f'{self.jh.sj.univ.name}|{self.jh.sj.sj}|{self.jh.name}|{self.name}'
+
+    def __repr__(self):
         return f'{self.jh.sj.univ.name}|{self.jh.sj.sj}|{self.jh.name}|{self.name}'
 
 
@@ -120,6 +129,9 @@ class Schedule(models.Model):
     def __str__(self):
         return f'{self.major.jh.sj.univ.name}|{self.major.jh.sj.sj}|{self.major.jh.name}|{self.major.name}|{self.description}'
 
+    def __repr__(self):
+        return f'{self.major.jh.sj.univ.name}|{self.major.jh.sj.sj}|{self.major.jh.name}|{self.major.name}|{self.description}'
+
 
 class Device(models.Model):
     class Meta:
@@ -142,4 +154,7 @@ class Device(models.Model):
             )
 
     def __str__(self):
+        return self.unique_id
+
+    def __repr__(self):
         return self.unique_id
