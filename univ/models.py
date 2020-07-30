@@ -34,7 +34,7 @@ class SJ(models.Model):
     class Meta:
         verbose_name = '수시/정시'
         verbose_name_plural = '수시/정시'
-        ordering = ['sj']
+        ordering = ['univ']
 
     univ = models.ForeignKey(
             verbose_name='대학',
@@ -56,7 +56,7 @@ class JH(models.Model):
     class Meta:
         verbose_name = '전형'
         verbose_name_plural = '전형'
-        ordering = ['name']
+        ordering = ['sj']
 
     sj = models.ForeignKey(
             verbose_name='수시/정시',
@@ -77,7 +77,7 @@ class Major(models.Model):
     class Meta:
         verbose_name = '전형별 학과'
         verbose_name_plural = '전형별 학과'
-        ordering = ['name']
+        ordering = ['jh']
 
     jh = models.ForeignKey(
             verbose_name='전형',
