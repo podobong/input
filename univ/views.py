@@ -20,7 +20,7 @@ class UnivList(APIView):
                     {'error': 'Device does not exist. To add a new device, use POST method.'},
                     status=status.HTTP_400_BAD_REQUEST,
                     )
-        majors = device.majors.all()
+        majors = device.majors.all().order_by('name')
         jhs = list(set([major.jh for major in majors]))
         sjs = list(set([major.jh.sj for major in majors]))
         univs = list(set([major.jh.sj.univ for major in majors]))
