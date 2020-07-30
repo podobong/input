@@ -21,8 +21,8 @@ class UnivList(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                     )
         majors = device.majors.all()
-        jhs = list(set([major.jh for major in majors]))
-        sjs = list(set([major.jh.sj for major in majors]))
+        jhs = sorted(list(set([major.jh for major in majors])))
+        sjs = sorted(list(set([major.jh.sj for major in majors])))
         univs = sorted(list(set([major.jh.sj.univ for major in majors])))
         serializer = UnivSerializer(univs, many=True, context={'request': request, 'sjs': sjs, 'jhs': jhs, 'majors': majors})
         return Response(serializer.data)
