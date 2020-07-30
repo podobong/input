@@ -32,6 +32,9 @@ class Univ(models.Model):
     def __repr__(self):
         return self.name
 
+    def __lt__(self, other):
+        return self.name < other.name
+
 
 class SJ(models.Model):
     class Meta:
@@ -53,6 +56,14 @@ class SJ(models.Model):
     
     def __str__(self):
         return f'{self.univ.name}|{self.sj}'
+
+    def __repr__(self):
+        return f'{self.univ.name}|{self.sj}'
+
+    def __lt__(self, other):
+        if self.univ != other.univ:
+            return self.univ < other.univ
+        return self.sj < other.sj
 
 
 class JH(models.Model):
@@ -78,6 +89,13 @@ class JH(models.Model):
     def __repr__(self):
         return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
 
+    def __lt__(self, other):
+        if self.sj != other.sj:
+            if self.sj.univ != other.sj.univ:
+                return self.sj.univ < other.sj.univ
+            return self.sj < other.sj
+        return self.name < other.name
+
 
 class Major(models.Model):
     class Meta:
@@ -101,6 +119,15 @@ class Major(models.Model):
 
     def __repr__(self):
         return f'{self.jh.sj.univ.name}|{self.jh.sj.sj}|{self.jh.name}|{self.name}'
+
+    def __lt__(self, other):
+        if self.jh != other.jh:
+            if self.jh.sj != other.jh.sj:
+                if self.jh.sj.univ != other.jh.sj.univ:
+                    return self.jh.sj.univ < other.jh.sj.univ
+                return self.jh.sj < other.jh.sj
+            return self.jh.name < other.jh.name
+        return self.name < other.name
 
 
 class Schedule(models.Model):
