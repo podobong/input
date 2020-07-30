@@ -8,6 +8,7 @@ class Univ(models.Model):
     class Meta:
         verbose_name = '대학'
         verbose_name_plural = '대학'
+        ordering = ['name']
 
     name = models.CharField(
             verbose_name='대학명',
@@ -55,6 +56,7 @@ class JH(models.Model):
     class Meta:
         verbose_name = '전형'
         verbose_name_plural = '전형'
+        ordering = ['name']
 
     sj = models.ForeignKey(
             verbose_name='수시/정시',
@@ -75,6 +77,7 @@ class Major(models.Model):
     class Meta:
         verbose_name = '전형별 학과'
         verbose_name_plural = '전형별 학과'
+        ordering = ['name']
 
     jh = models.ForeignKey(
             verbose_name='전형',
