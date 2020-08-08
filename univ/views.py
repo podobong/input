@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from univ.models import Univ, Major, Device
+from univ.models import Univ, Major, Schedule, Device
 from univ.serializers import UnivSerializer, UnivListSerializer
 
 
@@ -19,12 +19,21 @@ class UnivList(APIView):
             return Response(
                     {'error': 'Device does not exist. To add a new device, use POST method.'},
                     status=status.HTTP_400_BAD_REQUEST,
-                    )
+            )
         majors = device.majors.all()
         jhs = sorted(list(set([major.jh for major in majors])))
         sjs = sorted(list(set([major.jh.sj for major in majors])))
         univs = sorted(list(set([major.jh.sj.univ for major in majors])))
-        serializer = UnivSerializer(univs, many=True, context={'request': request, 'sjs': sjs, 'jhs': jhs, 'majors': majors})
+        serializer = UnivSerializer(
+                univs,
+                many=True,
+                context={
+                    'request': request,
+                    'sjs': sjs,
+                    'jhs': jhs,
+                    'majors': majors,
+                }
+        )
         return Response(serializer.data)
 
     def post(self, request):
@@ -56,13 +65,34 @@ class UnivList(APIView):
             device = Device.objects.create(unique_id=values.get('id'), token=values.get('token'))
         for i in range(num):
             major = Major.objects.get(
-                        Q(jh__sj__univ__name=values.get(f'univ{i}')) &
-                        Q(jh__name=values.get(f'jh{i}')) &
-                        Q(name=values.get(f'major{i}'))
-                        )
+                    Q(jh__sj__univ__name=values.get(f'univ{i}')) &
+                    Q(jh__name=values.get(f'jh{i}')) &
+                    Q(name=values.get(f'major{i}'))
+            )
             if major not in device.majors.all():
                 device.majors.add(major)
         device.save()
         # Serialize
         serializer = UnivSerializer(Univ.objects.all(), many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+class OfflineScheduleList(APIView):
+    def get(self, request):
+        schedules = Schedule.objects.filter(is_offline=True)
+        majors = sorted(list(set([schedule.major for schedule in schedules])))
+        jhs = sorted(list(set([schedule.major.jh for schedule in schedules])))
+        sjs = sorted(list(set([schedule.major.jh.sj for schedule in schedules])))
+        univs = sorted(list(set([schedule.major.jh.sj.univ for schedule in schedules])))
+        serializer = UnivSerializer(
+                univs,
+                many=True,
+                context={
+                    'request': request,
+                    'sjs': sjs,
+                    'jhs': jhs,
+                    'majors': majors,
+                    'schedules': schedules,
+                }
+        )
         return Response(serializer.data)

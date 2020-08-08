@@ -14,17 +14,17 @@ class Univ(models.Model):
             verbose_name='대학명',
             unique=True,
             max_length=30,
-            )
+    )
     logo = models.CharField(
             verbose_name='로고 URL',
             blank=True,
             max_length=100,
-            )
+    )
     review_url = models.CharField(
             verbose_name='리뷰 URL',
             blank=True,
             max_length=100,
-            )
+    )
 
     def __str__(self):
         return self.name
@@ -47,12 +47,12 @@ class SJ(models.Model):
             to=Univ,
             related_name='sjs',
             on_delete=models.CASCADE,
-            )
+    )
     sj = models.CharField(
             verbose_name='수시/정시',
             choices=SUSI_JEONGSI,
             max_length=10,
-            )
+    )
     
     def __str__(self):
         return f'{self.univ.name}|{self.sj}'
@@ -77,11 +77,11 @@ class JH(models.Model):
             to=SJ,
             related_name='jhs',
             on_delete=models.CASCADE,
-            )
+    )
     name = models.CharField(
             verbose_name='전형명',
             max_length=255,
-            )
+    )
 
     def __str__(self):
         return f'{self.sj.univ.name}|{self.sj.sj}|{self.name}'
@@ -108,11 +108,11 @@ class Major(models.Model):
             to=JH,
             related_name='majors',
             on_delete=models.CASCADE,
-            )
+    )
     name = models.CharField(
             verbose_name='학과명',
             max_length=50,
-            )
+    )
 
     def __str__(self):
         return f'{self.jh.sj.univ.name}|{self.jh.sj.sj}|{self.jh.name}|{self.name}'
@@ -141,17 +141,21 @@ class Schedule(models.Model):
             to=Major,
             related_name='schedules',
             on_delete=models.CASCADE,
-            )
+    )
     description = models.CharField(
             verbose_name='일정 설명',
             max_length=255,
-            )
+    )
     start_date = models.DateTimeField(
             verbose_name='시작 시간',
-            )
+    )
     end_date = models.DateTimeField(
             verbose_name='종료 시간',
-            )
+    )
+    is_offline = models.BooleanField(
+            verbose_name='대면 시험 여부',
+            default=False,
+    )
 
     def __str__(self):
         return f'{self.major.jh.sj.univ.name}|{self.major.jh.sj.sj}|{self.major.jh.name}|{self.major.name}|{self.description}'
@@ -169,16 +173,16 @@ class Device(models.Model):
             verbose_name='기기 ID',
             max_length=50,
             unique=True,
-            )
+    )
     majors = models.ManyToManyField(
             verbose_name='즐찾 학과',
             to=Major,
             related_name='devices',
-            )
+    )
     token = models.CharField(
             verbose_name='기기 token',
             max_length=256,
-            )
+    )
 
     def __str__(self):
         return self.unique_id

@@ -14,8 +14,7 @@ class ScheduleSerializer(s.ModelSerializer):
     def get_is_valid(self, obj):
         if make_aware(datetime.datetime.now()) < obj.end_date:
             return 1
-        else:
-            return 0
+        return 0
 
     def get_start_date(self, obj):
         return obj.start_date.astimezone(timezone('Asia/Seoul')).strftime('%Y-%m-%d-%H-%M-%S')
@@ -29,7 +28,14 @@ class ScheduleSerializer(s.ModelSerializer):
 
 
 class MajorSerializer(s.ModelSerializer):
-    schedules = ScheduleSerializer(many=True)
+    schedules = s.SerializerMethodField()
+
+    def get_schedules(self, obj):
+        if not self.context.get('schedules'):
+            return ScheduleSerializer(obj.schedules, many=True, context=self.context).data
+        all_schedules = self.context.get('schedules')
+        schedules_in_this_major = [schedule for schedule in all_schedules if schedule.major == obj]
+        return ScheduleSerializer(schedules_in_this_major, many=True, context=self.context).data
 
     class Meta:
         model = m.Major
