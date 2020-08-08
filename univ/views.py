@@ -6,7 +6,7 @@ from rest_framework import status
 
 from univ.models import Univ, Major, Schedule, Device
 from univ.serializers import UnivSerializer, UnivListSerializer
-from univ.string import string
+from univ.string import STRING
 
 
 class UnivList(APIView):
@@ -80,5 +80,4 @@ class UnivList(APIView):
 
 class OfflineScheduleList(APIView):
     def get(self, request):
-        string = string
-        return Response(string)
+        return Response(STRING)
