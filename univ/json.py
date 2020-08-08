@@ -1,4 +1,4 @@
-STRING = '''[
+OBJECT = [
     {
         "name": "DGIST",
         "logo": "http://ec2-54-180-101-171.ap-northeast-2.compute.amazonaws.com/media/dgist.jpg",
@@ -7466,4 +7466,4 @@ STRING = '''[
             }
         ]
     }
-]'''
+]
