@@ -111,7 +111,7 @@ class Major(models.Model):
     )
     name = models.CharField(
             verbose_name='학과명',
-            max_length=50,
+            max_length=255,
     )
 
     def __str__(self):
